@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional
 from app.models.obj import ObjectIdField
 from bson import ObjectId
+from typing import List, Optional
 
 # Address Schema
 class Address(BaseModel):
@@ -37,6 +38,7 @@ class User(BaseModel):
     updatedAt: datetime
     profile: Profile
     preferences: Preferences
+    currentDiseases: List[str]
 
     class Config:
         # Ensure ObjectId is serialized correctly
@@ -53,3 +55,4 @@ class CreateUser(BaseModel):
     updatedAt: datetime
     profile: Profile
     preferences: Preferences
+    currentDiseases: List[str]

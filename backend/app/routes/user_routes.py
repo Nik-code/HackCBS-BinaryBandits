@@ -7,6 +7,18 @@ from app.database import database as db
 from bson import ObjectId
 import os
 
+from fastapi import FastAPI, HTTPException, Depends
+from pydantic import BaseModel, EmailStr
+from typing import List
+from datetime import datetime
+import bcrypt
+from bson import ObjectId
+from app.database import database as db
+from passlib.context import CryptContext
+
+# Define the crypt context for password hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 user_router = APIRouter()
 
 # Secret key for signing session cookies
@@ -89,6 +101,50 @@ SESSION_TIMEOUT = 1800
 #     response.delete_cookie("session_token")
 #     return {"message": "Logout successful"}
 
+# Function to hash the password
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
+# Function to verify the password
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+# Register a new user
+@user_router.post("/register")
+async def register_user(user: CreateUser):
+    # Check if user already exists
+    existing_user = await db["users"].find_one({"email": user.email})
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    # Hash the password before storing it
+    hashed_password = hash_password(user.passwordHash)
+    
+    # Add timestamps
+    user.createdAt = user.updatedAt = datetime.utcnow()
+
+    # Store the user data in the database
+    new_user = user.dict()
+    new_user["passwordHash"] = hashed_password
+
+    result = await db["users"].insert_one(new_user)
+    return {"message": "User registered successfully", "userId": str(result.inserted_id)}
+
+# Login user (verify password)
+@user_router.post("/login")
+async def login_user(email: str, password: str):
+    # Fetch user from the database
+    user = await db["users"].find_one({"email": email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Verify the password
+    if not verify_password(password, user["passwordHash"]):
+        raise HTTPException(status_code=401, detail="Invalid password")
+
+    return {"message": "Login successful", "userId": str(user["_id"])}
+
+
 @user_router.post("/", response_model=User)
 async def create_user(user: CreateUser):
 
@@ -117,6 +173,14 @@ async def update_user(useruserId: str, user: CreateUser):
         raise HTTPException(status_code=404, detail="User not found")
     updated_user = await db["users"].find_one({"userId": ObjectId(useruserId)})
     return User(**updated_user)
+
+@user_router.get("/{user_id}",response_model=User)
+async def get_user(user_id:str):
+    user=await db["users"].find_one({"_id": ObjectId(user_id)})
+    if user is None:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    return User(**user)
+    
 
 ### Delete User Route ###
 @user_router.delete("/{useruserId}", status_code=status.HTTP_204_NO_CONTENT)
