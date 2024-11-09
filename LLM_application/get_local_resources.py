@@ -37,59 +37,13 @@ RESOURCE_MAP = {
 }
 
 
-@lru_cache(maxsize=100)
-def get_lat_long_from_city(city_name: str) -> str:
-    """
-    Convert a city name into latitude and longitude using the Google Maps Geocoding API.
-
-    Args:
-        city_name (str): The name of the city to geocode.
-
-    Returns:
-        str: A string in the format "latitude,longitude".
-
-    Raises:
-        ValueError: If the geocoding fails or no results are found.
-    """
-    try:
-        geocode_result = gmaps.geocode(city_name)
-        if not geocode_result:
-            raise ValueError(f"No results found for city: {city_name}")
-
-        location = geocode_result[0]['geometry']['location']
-        return f"{location['lat']},{location['lng']}"
-    except Exception as e:
-        raise ValueError(f"Geocoding failed for city {city_name}: {str(e)}")
-
-
-def is_valid_lat_long(location: str) -> bool:
-    """
-    Check if the given location string is a valid latitude,longitude format.
-
-    Args:
-        location (str): The location string to check.
-
-    Returns:
-        bool: True if the location is in valid lat,long format, False otherwise.
-    """
-    parts = location.split(',')
-    if len(parts) != 2:
-        return False
-
-    try:
-        lat, lon = map(float, parts)
-        return -90 <= lat <= 90 and -180 <= lon <= 180
-    except ValueError:
-        return False
-
-
 @lru_cache(maxsize=1000)
 def get_local_resources(location: str, resource_type: str, context: str = "") -> List[Dict[str, Union[str, float]]]:
     """
     Retrieve nearby resources based on the user's location, specified resource type, and context.
 
     Args:
-        location (str): The user's location, either in 'latitude,longitude' format or a city name.
+        location (str): The user's location, in 'latitude,longitude' format.
         resource_type (str): The type of resource to find (e.g., clinic, pharmacy, hospital).
         context (str): Additional context to refine the search (e.g., "stomach ache" for relevant specialists).
 
@@ -99,8 +53,6 @@ def get_local_resources(location: str, resource_type: str, context: str = "") ->
     Raises:
         ValueError: If the location is invalid or places retrieval fails.
     """
-    if not is_valid_lat_long(location):
-        location = get_lat_long_from_city(location)
 
     try:
         # Determine the most relevant specialist based on the context
@@ -127,6 +79,59 @@ def get_local_resources(location: str, resource_type: str, context: str = "") ->
         return [get_detailed_place_info(place['place_id']) for place in sorted_results[:10]]  # Return top 10 results with detailed info
     except Exception as e:
         raise ValueError(f"Failed to retrieve places: {str(e)}")
+
+
+# Endpoint for finding labs based on location and test category
+@app.get("/find_lab")
+def find_lab(location: str, test_category: str) -> List[Dict[str, Union[str, float]]]:
+    """
+    Find nearby labs offering specific tests based on the user's location and the test category.
+
+    Args:
+        location (str): The user's location, either in 'latitude,longitude' format or a city name.
+        test_category (str): The test category or type (e.g., "blood test", "MRI", "X-ray").
+
+    Returns:
+        List[Dict[str, Union[str, float]]]: A list of labs offering the specified test.
+    """
+    if not is_valid_lat_long(location):
+        location = get_lat_long_from_city(location)
+
+    try:
+        labs = search_labs_nearby(location, test_category)
+        if not labs:
+            raise HTTPException(status_code=404, detail="No labs found offering the specified test.")
+        return labs
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@lru_cache(maxsize=1000)
+def search_labs_nearby(location: str, test_category: str) -> List[Dict[str, Union[str, float]]]:
+    """
+    Search for labs nearby based on location and test category.
+
+    Args:
+        location (str): The user's location, either in 'latitude,longitude' format or a city name.
+        test_category (str): The test category (e.g., "blood test").
+
+    Returns:
+        List[Dict[str, Union[str, float]]]: A list of labs that match the test category.
+    """
+    try:
+        # Search labs with specified test in the Google Maps API
+        search_term = f"lab {test_category}"
+        places_result = gmaps.places_nearby(location=location, radius=SEARCH_RADIUS, keyword=search_term)
+
+        # Filter and process results
+        labs = []
+        for place in places_result.get('results', []):
+            labs.append(get_detailed_place_info(place['place_id']))
+
+        # Sort by rating or other factors
+        return sorted(labs, key=lambda x: (x.get('rating', 0), x.get('user_ratings_total', 0)), reverse=True)[:10]
+    except Exception as e:
+        raise ValueError(f"Failed to retrieve labs: {str(e)}")
 
 
 def determine_relevant_specialist(context: str) -> str:
@@ -170,32 +175,3 @@ def get_detailed_place_info(place_id: str) -> Dict[str, Union[str, float, List[s
         'opening_hours': result.get('opening_hours', {}).get('weekday_text', []),
         'reviews': [{'text': review['text'], 'rating': review['rating']} for review in result.get('reviews', [])[:3]]
     }
-
-
-def format_place_result(place: Dict[str, Union[str, float, List[str]]]) -> str:
-    """
-    Format a single place result into a human-readable string.
-
-    Args:
-        place (Dict[str, Union[str, float, List[str]]]): The place data.
-
-    Returns:
-        str: A formatted string with relevant place information.
-    """
-    formatted_result = f"Name: {place['name']}\n"
-    formatted_result += f"Address: {place['address']}\n"
-    formatted_result += f"Phone: {place['phone']}\n"
-    formatted_result += f"Rating: {place['rating']}\n"
-    formatted_result += f"Website: {place['website']}\n"
-
-    if place['opening_hours']:
-        formatted_result += "Opening Hours:\n"
-        for hours in place['opening_hours']:
-            formatted_result += f"  {hours}\n"
-
-    if place['reviews']:
-        formatted_result += "Top Reviews:\n"
-        for review in place['reviews']:
-            formatted_result += f"  - Rating: {review['rating']}/5, Comment: {review['text'][:100]}...\n"
-
-    return formatted_result

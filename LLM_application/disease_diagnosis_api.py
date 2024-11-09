@@ -1,5 +1,6 @@
 import time
 from openai import OpenAI
+from get_local_resources import get_local_resources
 from config import OPENAI_API_KEY
 import json
 
