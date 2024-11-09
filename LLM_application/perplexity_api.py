@@ -1,6 +1,7 @@
 from openai import OpenAI
 from config import PERPLEXITY_API_KEY
 
+
 def get_medical_information(prompt):
     YOUR_API_KEY = PERPLEXITY_API_KEY
 
@@ -33,8 +34,3 @@ def get_medical_information(prompt):
         return response.choices[0].message.content
     except Exception as e:
         return f"An error occurred: {e}"
-
-
-# Example usage:
-result = get_medical_information("What are the symptoms of diabetes?")
-print(result)
