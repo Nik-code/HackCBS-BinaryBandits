@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 
 # Secret key for encoding JWTs (use a secure secret in production)
-SECRET_KEY = "your_secret_key_here"
+SECRET_KEY = "acfe272a148201e0c3616b8a3e1edeffdc9e2b8f8221e81b149d8ee48a4bd8b3"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
