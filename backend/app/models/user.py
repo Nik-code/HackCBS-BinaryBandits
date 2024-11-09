@@ -37,7 +37,7 @@ class User(BaseModel):
     createdAt: datetime
     updatedAt: datetime
     profile: Profile
-    preferences: Preferences
+    preferences: Optional[Preferences]=None
     currentDiseases: List[str]
 
     class Config:
@@ -51,8 +51,6 @@ class User(BaseModel):
 class CreateUser(BaseModel):
     email: EmailStr
     passwordHash: str
-    createdAt: datetime
-    updatedAt: datetime
     profile: Profile
-    preferences: Preferences
+    preferences: Optional[Preferences]=None
     currentDiseases: List[str]

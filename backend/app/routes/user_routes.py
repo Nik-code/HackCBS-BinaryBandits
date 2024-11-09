@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends, Request, Response
+from fastapi import APIRouter, HTTPException, status, Depends, Request, Response, Body
 from datetime import datetime, timedelta
 import bcrypt
 from itsdangerous import URLSafeTimedSerializer
@@ -113,6 +113,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 @user_router.post("/register")
 async def register_user(user: CreateUser):
     # Check if user already exists
+
     existing_user = await db["users"].find_one({"email": user.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -132,7 +133,9 @@ async def register_user(user: CreateUser):
 
 # Login user (verify password)
 @user_router.post("/login")
-async def login_user(email: str, password: str):
+async def login_user(email: str =Body(..., embed=True), password: str= Body(..., embed=True)):
+    # print("called")
+    # print(email,password,"TEST")
     # Fetch user from the database
     user = await db["users"].find_one({"email": email})
     if not user:

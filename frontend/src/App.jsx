@@ -8,6 +8,7 @@ import Login from './components/auth/Login'
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import SignUp from './components/auth/SignUp'
 import Chatbot from './components/chatbot/Chatbot';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
+        <Route path="/SignUp" element={<SignUp/>}/>
       </Routes>
       {/* <Footer/> */}
       </BrowserRouter>
