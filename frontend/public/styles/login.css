@@ -1,0 +1,11 @@
+
+.form-holder{
+    background-color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    padding: 2rem;
+    flex-direction: column;
+    height:20rem;
+
+}
