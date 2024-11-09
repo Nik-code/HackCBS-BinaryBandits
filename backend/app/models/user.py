@@ -30,7 +30,7 @@ class Preferences(BaseModel):
 
 # User Schema (output for fetching user data)
 class User(BaseModel):
-    _id: ObjectIdField  # Mapping _id to userId
+    userId: ObjectIdField=Field(...,alias="_id")  # Mapping _id to userId
     email: EmailStr
     passwordHash: str
     createdAt: datetime
@@ -44,34 +44,12 @@ class User(BaseModel):
             ObjectId: str  # Convert ObjectId to string for the response
         }
 
-# User In Create Schema (for registration)
-class UserInCreate(BaseModel):
-    email: EmailStr
-    password: str
-    profile: Profile
-    preferences: Preferences
-
-# Token Schema (for JWT)
-class Token(BaseModel):
-    access_token: str
-    token_type: str
 
 
 class CreateUser(BaseModel):
-    email: str
-    passwordHash: str
-    profile: Profile
-    preferences: Preferences
-
-class GetUser(BaseModel):
-    _id: str  # Mapping _id to userId
     email: EmailStr
+    passwordHash: str
     createdAt: datetime
     updatedAt: datetime
     profile: Profile
     preferences: Preferences
-
-    # class Config:
-    #     json_encoders = {
-    #         ObjectId: str
-    #     }
