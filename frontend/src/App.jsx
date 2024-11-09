@@ -8,16 +8,17 @@ import Login from './components/auth/Login'
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Chatbot from './components/chatbot/Chatbot';
 
 function App() {
   const [count, setCount] = useState(0)
-
   return (
     <>
       <BrowserRouter>
       {/* <Navbar/> */}
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
       </Routes>
