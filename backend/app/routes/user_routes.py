@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends, Request, Response
+from fastapi import APIRouter, HTTPException, status, Depends, Request, Response, Body
 from datetime import datetime, timedelta
 import bcrypt
 from itsdangerous import URLSafeTimedSerializer
@@ -132,7 +132,9 @@ async def register_user(user: CreateUser):
 
 # Login user (verify password)
 @user_router.post("/login")
-async def login_user(email: str, password: str):
+async def login_user(email: str =Body(..., embed=True), password: str= Body(..., embed=True)):
+    # print("called")
+    # print(email,password,"TEST")
     # Fetch user from the database
     user = await db["users"].find_one({"email": email})
     if not user:
