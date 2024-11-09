@@ -3,3 +3,4 @@ pydantic
 motor               # Async MongoDB driver
 python-dotenv       # To load environment variables
 uvicorn             # ASGI server for FastAPI
+pydantic[email]
