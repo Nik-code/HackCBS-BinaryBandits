@@ -85,9 +85,12 @@ export default function Component() {
             >
               <h2 className="text-5xl font-bold text-neutral-800 mb-6">Welcome to CuraNet</h2>
               <p className="text-2xl text-neutral-600 mb-12">Your AI-Powered Healthcare Companion</p>
-              <Button className="bg-teal-400 hover:bg-teal-500 text-white text-lg py-6 px-8">
+              <a href="/Login">
+                <Button className="bg-teal-400 hover:bg-teal-500 text-white text-lg py-6 px-8">
                 Get Started
-              </Button>
+                </Button>
+              </a>
+              
             </motion.div>
           </div>
         </section>

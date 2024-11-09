@@ -166,7 +166,7 @@ export default function LoginPage() {
             {activeTab === "login" ? (
               <>
                 Don't have an account?{" "}
-                <Link href="#" className="text-teal-500 hover:underline" onClick={() => setActiveTab("signup")}>
+                <Link href="/SignUp" className="text-teal-500 hover:underline" onClick={() => setActiveTab("signup")}>
                   Sign up
                 </Link>
               </>
