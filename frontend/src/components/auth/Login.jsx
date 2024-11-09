@@ -173,7 +173,7 @@ export default function LoginPage() {
             ) : (
               <>
                 Already have an account?{" "}
-                <Link href="#" className="text-teal-500 hover:underline" onClick={() => {
+                <Link href="/login" className="text-teal-500 hover:underline" onClick={() => {
                   setActiveTab("login")
                   handleSubmit;
                   }}>

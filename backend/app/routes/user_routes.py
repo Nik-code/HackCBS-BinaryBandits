@@ -113,6 +113,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 @user_router.post("/register")
 async def register_user(user: CreateUser):
     # Check if user already exists
+
     existing_user = await db["users"].find_one({"email": user.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
