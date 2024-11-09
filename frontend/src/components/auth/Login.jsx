@@ -69,7 +69,7 @@
 //           <TextField
 //             required
 //             name="email"
-//             FormLabel="Email"
+//             FormInputLabel="Email"
 //             type="text"
 //             autoComplete="email"
 //             value={formData.email}
@@ -82,7 +82,7 @@
 //           <TextField
 //             required
 //             name="password"
-//             FormLabel="Password"
+//             FormInputLabel="Password"
 //             type={showPassword?"password":"text"}
 //             autoComplete="current-password"
 //             value={formData.password}
@@ -94,7 +94,7 @@
 //                   <IconButton
 //                     onClick={handleTogglePasswordVisibility}
 //                     edge="end"
-//                     aria-FormLabel="toggle password visibility"
+//                     aria-FormInputLabel="toggle password visibility"
 //                   >
 //                     {showPassword ? <VisibilityOff /> : <Visibility />}
 //                   </IconButton>
@@ -130,7 +130,7 @@
 // import { Input } from "@mui/material";
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@mui/material";
 // import { Tabs, Tab, TabPanel, TabList, TabPanels } from "@mui/material";
-// import { FormLabel } from "@mui/material";
+// import { FormInputLabel } from "@mui/material";
 
 // // import Image from "next/image"
 // import Link from '@mui/material/Link';
@@ -259,7 +259,7 @@
 //               <form onSubmit={handleSubmit}>
 //                 <div className="space-y-4">
 //                   <div className="space-y-2">
-//                     <FormLabel htmlFor="email">Email</FormLabel>
+//                     <FormInputLabel htmlFor="email">Email</FormInputLabel>
 //                     <Input 
 //                       id="email" 
 //                       type="email" 
@@ -270,7 +270,7 @@
 //                     />
 //                   </div>
 //                   <div className="space-y-2">
-//                     <FormLabel htmlFor="password">Password</FormLabel>
+//                     <FormInputLabel htmlFor="password">Password</FormInputLabel>
 //                     <Input 
 //                       id="password" 
 //                       type="password" 
@@ -292,15 +292,15 @@
 //               <form>
 //                 <div className="space-y-4">
 //                   <div className="space-y-2">
-//                     <FormLabel htmlFor="signup-name">Full Name</FormLabel>
+//                     <FormInputLabel htmlFor="signup-name">Full Name</FormInputLabel>
 //                     <Input id="signup-name" type="text" required />
 //                   </div>
 //                   <div className="space-y-2">
-//                     <FormLabel htmlFor="signup-email">Email</FormLabel>
+//                     <FormInputLabel htmlFor="signup-email">Email</FormInputLabel>
 //                     <Input id="signup-email" type="email" placeholder="m@example.com" required />
 //                   </div>
 //                   <div className="space-y-2">
-//                     <FormLabel htmlFor="signup-password">Password</FormLabel>
+//                     <FormInputLabel htmlFor="signup-password">Password</FormInputLabel>
 //                     <Input id="signup-password" type="password" required />
 //                   </div>
 //                   <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white">
@@ -337,9 +337,10 @@
 
 
 
+
+
 import { useState } from 'react';
-import { Button, Input, Card, CardContent, CardHeader, FormLabel, Link, Tabs, Tab , Typography} from "@mui/material";
-import { TabPanel } from "@mui/lab";
+import { Button, Input, Card, CardContent, CardHeader,CardActions, FormLabel, Link, Tabs, Tab , Typography} from "@mui/material";
 import { Img } from "react-image";
 import { motion } from "framer-motion";
 
@@ -442,10 +443,12 @@ export default function LoginPage() {
       <Card className="w-full max-w-md z-10 bg-white/80 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
-            <Img 
+            <img 
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CuraNet_Logo-v2ODPLpANeEXfPECK6GjnRCoVodV4z.png"
               alt="CuraNet Logo"
               className="w-auto h-12"
+              height={100}
+              width={199}
             />
           </div>
           <Typography className="text-2xl font-bold text-center text-neutral-800">Welcome to CuraNet</Typography>
@@ -455,13 +458,6 @@ export default function LoginPage() {
         </CardHeader>
 
         <CardContent>
-          <Tabs value={activeTab} onChange={(e, newTab) => setActiveTab(newTab)} className="w-full">
-            <TabList className="grid w-full grid-cols-2 mb-4">
-              <Tab label="Log In" value="login" />
-              <Tab label="Sign Up" value="signup" />
-            </TabList>
-
-            <TabPanel value="login">
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -473,6 +469,7 @@ export default function LoginPage() {
                       required
                       value={formData.email}
                       onChange={handleChange}
+                      style={{marginLeft:"2.8rem"}}
                     />
                   </div>
                   <div className="space-y-2">
@@ -483,6 +480,7 @@ export default function LoginPage() {
                       required
                       value={formData.password}
                       onChange={handleChange}
+                      style={{marginLeft:"1rem"}}
                     />
                   </div>
                   <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white" type="submit">
@@ -490,30 +488,6 @@ export default function LoginPage() {
                   </Button>
                 </div>
               </form>
-            </TabPanel>
-
-            <TabPanel value="signup">
-              <form>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="signup-name">Full Name</FormLabel>
-                    <Input id="signup-name" type="text" required />
-                  </div>
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="signup-email">Email</FormLabel>
-                    <Input id="signup-email" type="email" placeholder="m@example.com" required />
-                  </div>
-                  <div className="space-y-2">
-                    <FormLabel htmlFor="signup-password">Password</FormLabel>
-                    <Input id="signup-password" type="password" required />
-                  </div>
-                  <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white">
-                    Sign Up
-                  </Button>
-                </div>
-              </form>
-            </TabPanel>
-          </Tabs>
         </CardContent>
 
         <CardActions>
@@ -539,3 +513,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

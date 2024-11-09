@@ -13,10 +13,14 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.6",
+    "@mui/lab": "^6.0.0-beta.14",
     "@mui/material": "^6.1.6",
     "flyonui": "^1.1.0",
+    "framer-motion": "^11.11.11",
+    "lucide-react": "^0.456.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-image": "^4.1.0",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
@@ -35,5 +39,5 @@
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.10"
   },
-   "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:8000"
 }
