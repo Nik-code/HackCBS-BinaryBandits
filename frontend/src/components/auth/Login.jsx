@@ -441,21 +441,25 @@ export default function LoginPage() {
       </div>
 
       <Card className="w-full max-w-md z-10 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="space-y-1">
+        <div>
+        {/* <CardHeader className="space-y-1"> */}
           <div className="flex items-center justify-center mb-4">
-            <img 
+            <Img 
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CuraNet_Logo-v2ODPLpANeEXfPECK6GjnRCoVodV4z.png"
               alt="CuraNet Logo"
               className="w-auto h-12"
               height={100}
               width={199}
+              style={{paddingTop:'0.5rem'}}
             />
           </div>
           <Typography className="text-2xl font-bold text-center text-neutral-800">Welcome to CuraNet</Typography>
           <CardContent className="text-center text-neutral-600">
             Your AI-Powered Healthcare Companion
           </CardContent>
-        </CardHeader>
+        {/* </CardHeader> */}
+        </div>
+        
 
         <CardContent>
               <form onSubmit={handleSubmit}>
