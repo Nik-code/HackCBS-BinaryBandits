@@ -12,7 +12,7 @@ def get_medical_information(prompt):
             "content": (
                 "You are an artificial intelligence assistant specialized in "
                 "providing accurate, detailed, and reliable medical information. "
-                "Please respond with medically accurate and evidence-based answers "
+                "Please respond with medically accurate and evidence-infebased answers "
                 "to the best of your ability."
             ),
         },
