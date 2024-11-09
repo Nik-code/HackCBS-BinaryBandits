@@ -1,0 +1,152 @@
+import time
+from openai import OpenAI
+from config import OPENAI_API_KEY
+import json
+
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+SYSTEM_PROMPT = '''
+You are a knowledgeable and friendly health consultant chatbot. Your primary goal is to provide accurate, helpful, and actionable health information to users. You should always strive to be helpful and never refuse to give medical advice. However, you must prioritize user safety and encourage professional medical consultation when appropriate.
+
+Key Guidelines:
+1. Provide accurate and helpful medical advice based on the information available to you. Use your tools to gather relevant information when needed.
+2. Always be willing to offer suggestions for medication or treatments. However, if you're not entirely certain about a recommendation, advise the user to consult with a healthcare professional for a definitive diagnosis and treatment plan.
+3. Utilize the tools at your disposal (web search, local resource lookup) to their full potential. Don't hesitate to use these tools to provide the most up-to-date and relevant information.
+4. If you need more context to provide a better response, always ask the user for additional information. Be thorough in your information gathering to ensure accurate advice.
+5. Maintain a warm and friendly tone, but remember that accuracy and helpfulness are your top priorities. Use simple language and avoid medical jargon when possible, but don't oversimplify at the cost of accuracy.
+6. When suggesting local health services or presenting search results, explain why the information is relevant to the user's query or condition.
+7. If a user's question or condition seems serious or potentially life-threatening, strongly encourage them to seek immediate medical attention or call emergency services.
+8. Never say phrases like "I can't suggest that" or "I'm not a health expert." Instead, provide the best advice you can based on your knowledge and available information.
+9. Be mindful of potential harm. While you should always try to be helpful, avoid suggesting anything that could be dangerous or detrimental to the user's health.
+10. For complex topics, provide a concise overview first, then offer to elaborate on specific aspects if the user desires more information.
+11. Show empathy and support throughout the conversation, especially when discussing sensitive health issues.
+12. If you're unsure about any aspect of the user's condition or the appropriate advice, be honest about your limitations and suggest professional medical consultation.
+
+Remember, your role is to be a helpful first point of contact for health-related queries, providing useful information and guidance while ensuring user safety is always the top priority.
+'''
+
+
+def create_assistant():
+    """Create and return a new assistant instance."""
+    return client.beta.assistants.create(
+        name="Healthcare Chatbot",
+        instructions=SYSTEM_PROMPT,
+        model="gpt-4o-mini-2024-07-18",
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_medical_information",
+                    "description": "Search the web for reliable health information using PerplexitY AI",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string"}
+                        },
+                        "required": ["query"]
+                    }
+                }
+            },
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_local_resources",
+                    "description": "Get location-based healthcare services",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "location": {"type": "string"},
+                            "resource_type": {"type": "string"},
+                            "context": {"type": "string"}
+                        },
+                        "required": ["location", "resource_type"]
+                    }
+                }
+            }
+        ]
+    )
+
+
+# Global variable to store the current assistant
+current_assistant = create_assistant()
+
+
+def chat(user_message, thread_id=None, reset=False):
+    global current_assistant
+    start_time = time.time()
+    print(f"Processing chat. Thread ID: {thread_id}, Reset: {reset}")
+
+    if reset:
+        print("Resetting assistant and creating new thread")
+        current_assistant = create_assistant()
+        thread = client.beta.threads.create()
+        thread_id = thread.id
+    elif not thread_id:
+        print("No thread ID provided, creating new thread")
+        thread = client.beta.threads.create()
+        thread_id = thread.id
+
+    client.beta.threads.messages.create(
+        thread_id=thread_id,
+        role="user",
+        content=user_message
+    )
+    print(f"User message added to thread {thread_id}")
+
+    run = client.beta.threads.runs.create(
+        thread_id=thread_id,
+        assistant_id=current_assistant.id
+    )
+    print(f"Run created for thread {thread_id}")
+
+    while run.status not in ["completed", "failed"]:
+        run = client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
+        print(f"Run status: {run.status}")
+        if run.status == "requires_action":
+            print("Run requires action")
+            tool_outputs = handle_tool_calls(run.required_action.submit_tool_outputs.tool_calls)
+            run = client.beta.threads.runs.submit_tool_outputs(
+                thread_id=thread_id,
+                run_id=run.id,
+                tool_outputs=tool_outputs
+            )
+
+    if run.status == "failed":
+        print(f"Run failed for thread {thread_id}")
+        return "I'm sorry, but I encountered an error. Please try again later.", thread_id
+
+    messages = client.beta.threads.messages.list(thread_id=thread_id)
+    print(f"Chat response generated for thread {thread_id}")
+    end_time = time.time()
+    print(f"Total processing time: {end_time - start_time:.2f} seconds")
+    return messages.data[0].content[0].text.value, thread_id
+
+
+def handle_tool_calls(tool_calls):
+    tool_outputs = []
+    for tool_call in tool_calls:
+        start_time = time.time()
+        if tool_call.function.name == "perform_web_search":
+            args = json.loads(tool_call.function.arguments)
+            print(f"Performing web search for query: {args['query']}")
+            search_results = perform_web_search(args["query"])
+            summarized_results = summarize_search_results(search_results)
+            tool_outputs.append({
+                "tool_call_id": tool_call.id,
+                "output": json.dumps(summarized_results)
+            })
+        elif tool_call.function.name == "get_local_resources":
+            args = json.loads(tool_call.function.arguments)
+            print(f"Getting local resources for: {args}")
+            result = get_local_resources(
+                location=args["location"],
+                resource_type=args["resource_type"],
+                context=args.get("context", "")
+            )
+            tool_outputs.append({
+                "tool_call_id": tool_call.id,
+                "output": json.dumps(result)
+            })
+        end_time = time.time()
+        print(f"Tool call '{tool_call.function.name}' completed in {end_time - start_time:.2f} seconds")
+    return tool_outputs
