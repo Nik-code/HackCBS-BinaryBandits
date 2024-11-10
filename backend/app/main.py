@@ -53,3 +53,4 @@ async def chatbot_endpoint(request: Request):
         return {"response": response, "thread_id": new_thread_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
