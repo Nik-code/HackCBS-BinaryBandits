@@ -17,7 +17,7 @@ export default function SignUp() {
   //   },
   // });
   const [activeTab, setActiveTab] = useState("SignUp");
-  const {userId,setUserId}=useContext(stateContext);
+  // const {userId,setUserId}=useContext(stateContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -75,11 +75,12 @@ const getCoordinates=async (location)=>{
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password, firstName, lastName, dateOfBirth, gender, contactNumber, address } = formData;
-    if(userId){
-      // toast.info("user already logged in!");
-      console.log("Already logged in!");
-      navigate("/");
-      return
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+        console.log("User is logged in with userId:", userId);
+        // Use the userId as needed
+        navigate("/");
+        return
     }
     try {
         const endpoint = "http://127.0.0.1:8000/api/users/register";
@@ -121,7 +122,9 @@ const getCoordinates=async (location)=>{
             alert("Registration successful! Please log in.");
             setActiveTab("login");
             const data = await response.json();
-            setUserId(data.userId);
+            // setUserId(data.userId);
+            localStorage.setItem("userId", data.userId)
+            console.log("REG IN ID",localStorage.getItem("userId"));
         } else {
             console.error("Invalid data or server error.");
         }

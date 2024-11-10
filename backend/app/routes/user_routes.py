@@ -167,14 +167,14 @@ async def create_user(user: CreateUser):
 
 
 ### Update User Route ###
-@user_router.put("/{useruserId}", response_model=User)
-async def update_user(useruserId: str, user: CreateUser):
+@user_router.put("/{userId}", response_model=User)
+async def update_user(userId: str, user: CreateUser):
     user.updatedAt = datetime.utcnow()
     user_dict = user.dict(by_alias=True, exclude_unset=True)
-    result = await db["users"].update_one({"userId": ObjectId(useruserId)}, {"$set": user_dict})
+    result = await db["users"].update_one({"userId": ObjectId(userId)}, {"$set": user_dict})
     if result.modified_count == 0:
         raise HTTPException(status_code=404, detail="User not found")
-    updated_user = await db["users"].find_one({"userId": ObjectId(useruserId)})
+    updated_user = await db["users"].find_one({"userId": ObjectId(userId)})
     return User(**updated_user)
 
 @user_router.get("/{user_id}",response_model=User)

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import { 
-  TextField, 
-  Button, 
-  Box, 
-  Paper, 
-  Typography, 
-  Divider, 
-  ThemeProvider, 
+
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  TextField,
+  Button,
+  Box,
+  Paper,
+  Typography,
+  Divider,
+  ThemeProvider,
   createTheme,
   CssBaseline
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import { stateContext } from '../../context';
 
 const theme = createTheme({
   palette: {
@@ -26,6 +28,8 @@ const theme = createTheme({
 export default function Component() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const userId = localStorage.getItem("userId");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSend = () => {
     if (input.trim() === "") return;
@@ -49,6 +53,45 @@ export default function Component() {
       setMessages((prevMessages) => [...prevMessages, botResponse]);
     }, 1000);
   };
+
+  const getUserData=async ()=>{
+    try {
+      console.log("userId",userId);
+      const response=await fetch(`http://127.0.0.1:8000/api/users/${userId}`,
+        {
+          method:"GET"
+        }
+      )
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        return data
+        // toast.success("User logged in successfully!")
+      } else {
+        // Handle errors or invalid response
+        // toast.error("Wrong email or password")
+        console.log("Invalid credentials or server error.");
+        return ""
+      }
+    } catch (error) {
+      console.log(error);
+      return ""
+    }
+  }
+  useEffect(() => {
+    console.log(userId);
+    const user_demographic=getUserData();
+    // const user_history=getUserHistory();
+    // Simulate a bot response after a short delay
+    setTimeout(() => {
+      const botResponse = {
+        text: "This is a bot response.",
+        from: "bot",
+        timestamp: Date.now()
+      };
+      setMessages((prevMessages) => [...prevMessages, botResponse]);
+    }, 1000);
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>
