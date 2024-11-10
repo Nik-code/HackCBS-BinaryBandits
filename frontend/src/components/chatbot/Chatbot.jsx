@@ -99,8 +99,8 @@ export default function Component() {
     formatted = formatted.replace(/\*([^\*]+)\*/g, "<b>$1</b>"); // for *bold*
 
     // Put each list item on a new line for numbered items and bullet points
-    formatted = formatted.replace(/(\d+\.)\s/g, "\n$1 "); // Numbered lists
-    formatted = formatted.replace(/(-)\s/g, "\n$1 "); // Bullet points
+    formatted = formatted.replace(/(\d+\.)\s/g, "<br/>$1 "); // Numbered lists
+    formatted = formatted.replace(/(-)\s/g, "<br/>$1 "); // Bullet points
 
     return formatted;
 }
@@ -182,7 +182,9 @@ export default function Component() {
                 }}
               >
                 {/* <Typography variant="body2">{msg.text}</Typography> */}
-                <Typography variant="body2">{formatText(msg.text)}</Typography>
+                {/* <Typography variant="body2">{formatText(msg.text)}</Typography> */}
+                <div dangerouslySetInnerHTML={{__html:formatText(msg.text) }} />
+                
                 <Typography variant="caption" sx={{ opacity: 0.7 }}>
                   {new Date(msg.timestamp).toLocaleTimeString()}
                 </Typography>
