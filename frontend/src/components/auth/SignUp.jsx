@@ -142,7 +142,7 @@ const getCoordinates=async (location)=>{
     <ToastContainer />
     
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-xl z-10 bg-white/80 backdrop-blur-sm"> {/* Changed max-w-md to max-w-xl */}
+      <Card className="w-full max-w-xl z-10 bg-white/80 backdrop-blur-sm mt-15"> {/* Changed max-w-md to max-w-xl */}
         <div className="flex items-center justify-center mb-4">
           <Img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CuraNet_Logo-v2ODPLpANeEXfPECK6GjnRCoVodV4z.png"
@@ -219,7 +219,17 @@ const getCoordinates=async (location)=>{
                 <Input id="password" type="password" value={formData.password} onChange={handleChange} fullWidth required />
               </div>
 
-              <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white col-span-2" type="submit">
+              <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white col-span-2" type="submit"
+              sx={{
+                backgroundColor: 'teal',            // Initial background color
+                color: 'white',                     // Text color
+                '&:hover': {
+                backgroundColor: '#037364',      // Hover background color
+                },
+                fontSize:'1.2rem',
+                borderRadius:'1.6rem',
+                padding:"0.5rem 1rem"
+  }}>
                 Sign Up
               </Button>
             </div>

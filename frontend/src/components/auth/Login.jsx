@@ -8,24 +8,13 @@ import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
-  // toast.configure({
-  //   autoClose: 3000,
-  //   draggable: false,
-  //   style: {
-  //     width: '300px',
-  //     fontSize: '14px',
-  //   },
-  // });
+
   const [activeTab, setActiveTab] = useState("login");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const navigate = useNavigate();
-  // const[userId,setUserId]=useState();
-  // const {userId,setUserId}=useContext(stateContext);
-
-  // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -184,7 +173,17 @@ export default function LoginPage() {
                       style={{marginLeft:"1rem"}}
                     />
                   </div>
-                  <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white" type="submit">
+                  <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white" type="submit"
+                  sx={{
+                    backgroundColor: 'teal',            // Initial background color
+                    color: 'white',                     // Text color
+                    '&:hover': {
+                    backgroundColor: '#037364',      // Hover background color
+                    },
+                    fontSize:'1.2rem',
+                    borderRadius:'1.6rem',
+                    padding:"0.5rem 1rem"
+      }}>
                     Log In
                   </Button>
                 </div>

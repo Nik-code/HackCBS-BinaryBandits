@@ -5,6 +5,7 @@ import { Card, CardContent } from "@mui/material"
 import { BrainCircuit, MapPin, FileText, Bell, MessageCircle, TestTube, TrendingUp, Users } from "lucide-react"
 import { motion } from "framer-motion"
 import {Img} from "react-image"
+import { Link } from "react-router-dom"
 
 export default function Component() {
   return (
@@ -23,10 +24,11 @@ export default function Component() {
           </div>
           <nav>
             <ul className="flex space-x-6">
-              <li><a href="/login" className="text-neutral-600 hover:text-teal-500 transition-colors">Login</a></li>
-              <li><a href="/signup" className="text-neutral-600 hover:text-teal-500 transition-colors">SignUp</a></li>
-              <li><a href="/chatbot" className="text-neutral-600 hover:text-teal-500 transition-colors">Chatbot</a></li>
-              <li><a href="/reportanalysis" className="text-neutral-600 hover:text-teal-500 transition-colors">Report Analysis</a></li>
+              <li><Link to="/login" className="text-neutral-600 hover:text-teal-500 transition-colors">Login</Link></li>
+              <li><Link to="/signup" className="text-neutral-600 hover:text-teal-500 transition-colors">SignUp</Link></li>
+              <li><Link to="/chatbot" className="text-neutral-600 hover:text-teal-500 transition-colors">Chatbot</Link></li>
+              <li><Link to="/reportanalysis" className="text-neutral-600 hover:text-teal-500 transition-colors">Report Analysis</Link></li>
+              <li><Link to="/outbreak-map" className="text-neutral-600 hover:text-teal-500 transition-colors">Disease Outbreak</Link></li>
             </ul>
           </nav>
         </div>
@@ -86,7 +88,7 @@ export default function Component() {
             >
               <h2 className="text-5xl font-bold text-neutral-800 mb-6">Welcome to CuraNet</h2>
               <p className="text-2xl text-neutral-600 mb-12">Your AI-Powered Healthcare Companion</p>
-              <a href="/Login">
+              <Link to="/Login">
                 <Button className= "text-4xl py-8 px-10" 
                 sx={{
                 backgroundColor: 'teal',            // Initial background color
@@ -100,7 +102,7 @@ export default function Component() {
   }}>
                 Get Started
                 </Button>
-              </a>
+              </Link>
               
             </motion.div>
           </div>

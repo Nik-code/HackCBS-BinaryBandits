@@ -68,9 +68,9 @@ export default function Analysis() {
     
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="md">
-        <Box sx={{ my: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
+      <Container maxWidth="md" >
+        <Box >
+          <Typography variant="h4" component="h1" gutterBottom align="center" className="pt-20">
             AI Powered Report Analysis
           </Typography>
           <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
