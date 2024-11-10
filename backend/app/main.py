@@ -7,7 +7,7 @@ from .routes.symptom_routes import symptom_analysis_router
 from .routes.lab_routes import lab_router
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from llm_services.disease_diagnosis_api import chat  # Importing the chatbot function
+from app.llm_services.disease_diagnosis_api import chat  # Importing the chatbot function
 
 app = FastAPI()
 
@@ -46,11 +46,16 @@ async def chatbot_endpoint(request: Request):
         thread_id = data.get('thread_id')
         reset = data.get('reset', False)
 
+        print("HI")
+        print(user_message,thread_id,reset)
         if not user_message:
+            print("YO")
             raise HTTPException(status_code=400, detail="User message is required")
 
+        print("ALSO HERE")
         response, new_thread_id = chat(user_message, thread_id, reset)
         return {"response": response, "thread_id": new_thread_id}
     except Exception as e:
+        print("HERE")
         raise HTTPException(status_code=500, detail=str(e))
 

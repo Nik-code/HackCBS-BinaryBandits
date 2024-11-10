@@ -1,8 +1,8 @@
 import time
 from openai import OpenAI
-from get_local_resources import get_local_resources
-from perplexity_api import get_medical_information
-from config import OPENAI_API_KEY
+# from get_local_resources import get_local_resources
+from .perplexity_api import get_medical_information
+from .config import OPENAI_API_KEY
 import json
 
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -134,11 +134,12 @@ def handle_tool_calls(tool_calls):
             result = get_medical_information(args['query'])
         elif tool_call.function.name == "get_local_resources":
             print(f"Getting local resources for: {args}")
-            result = get_local_resources(
-                location=args["location"],
-                resource_type=args["resource_type"],
-                context=args.get("context", "")
-            )
+            result = []
+            # result = get_local_resources(
+            #    location=args["location"],
+            #    resource_type=args["resource_type"],
+            #    context=args.get("context", "")
+            # )
         else:
             result = {}
             print(f"Unknown tool call: {tool_call.function.name}")

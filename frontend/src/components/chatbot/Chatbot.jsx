@@ -31,6 +31,44 @@ export default function Component() {
   const userId = localStorage.getItem("userId");
   const [isLoading, setIsLoading] = useState(false);
 
+  const addBotResponse=async (message,thread_id)=>{
+    const input={message,thread_id}
+    try{
+      const response=await fetch("http://127.0.0.1:8000/api/chat",{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          message: JSON.stringify(message), // Ensure `userMessage` is defined and in the expected format,
+          thread_id:thread_id
+      })
+      })
+      console.log("RES",response)
+      if (response.ok) {
+        const data = await response.json();
+        // Save the token to localStorage (or session storage)
+        // localStorage.setItem("token", data.access_token);
+        console.log(data);
+        localStorage.setItem("thread_id", data.thread_id);
+        setTimeout(() => {
+          const botResponse = {
+            text: data.response,
+            from: "bot",
+            timestamp: Date.now()
+          };
+          setMessages((prevMessages) => [...prevMessages, botResponse]);
+        }, 1000);
+      } else {
+        console.log(response)
+        console.log("Invalid credentials or server error.");
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
   const handleSend = () => {
     if (input.trim() === "") return;
 
@@ -44,15 +82,28 @@ export default function Component() {
     setInput("");
 
     // Simulate a bot response after a short delay
-    setTimeout(() => {
-      const botResponse = {
-        text: "This is a bot response.",
-        from: "bot",
-        timestamp: Date.now()
-      };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    // setTimeout(() => {
+    //   const botResponse = {
+    //     text: "This is a bot response.",
+    //     from: "bot",
+    //     timestamp: Date.now()
+    //   };
+    //   setMessages((prevMessages) => [...prevMessages, botResponse]);
+    // }, 1000);
+    addBotResponse(input,localStorage.getItem("thread_id"));
   };
+
+  function formatText(input) {
+    // Bold words surrounded by * or ** by replacing with <b> tags
+    let formatted = input.replace(/\*\*([^\*]+)\*\*/g, "<b>$1</b>"); // for **bold**
+    formatted = formatted.replace(/\*([^\*]+)\*/g, "<b>$1</b>"); // for *bold*
+
+    // Put each list item on a new line for numbered items and bullet points
+    formatted = formatted.replace(/(\d+\.)\s/g, "<br/>$1 "); // Numbered lists
+    formatted = formatted.replace(/(-)\s/g, "<br/>$1 "); // Bullet points
+
+    return formatted;
+}
 
   const getUserData=async ()=>{
     try {
@@ -78,19 +129,13 @@ export default function Component() {
       return ""
     }
   }
+
+  
   useEffect(() => {
     console.log(userId);
     const user_demographic=getUserData();
-    // const user_history=getUserHistory();
-    // Simulate a bot response after a short delay
-    setTimeout(() => {
-      const botResponse = {
-        text: "This is a bot response.",
-        from: "bot",
-        timestamp: Date.now()
-      };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    addBotResponse(`I am just giving you some data as base for further anlysis. My data is this ${JSON.stringify(user_demographic)}. Hi There! lets greet each other`,null)
+
   }, [])
 
   return (
@@ -136,7 +181,10 @@ export default function Component() {
                   maxWidth: '70%',
                 }}
               >
-                <Typography variant="body2">{msg.text}</Typography>
+                {/* <Typography variant="body2">{msg.text}</Typography> */}
+                {/* <Typography variant="body2">{formatText(msg.text)}</Typography> */}
+                <div dangerouslySetInnerHTML={{__html:formatText(msg.text) }} />
+                
                 <Typography variant="caption" sx={{ opacity: 0.7 }}>
                   {new Date(msg.timestamp).toLocaleTimeString()}
                 </Typography>
