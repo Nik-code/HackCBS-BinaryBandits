@@ -23,9 +23,10 @@ export default function Component() {
           </div>
           <nav>
             <ul className="flex space-x-6">
-              <li><a href="#features" className="text-neutral-600 hover:text-teal-500 transition-colors">Features</a></li>
-              <li><a href="#community" className="text-neutral-600 hover:text-teal-500 transition-colors">Community</a></li>
-              <li><a href="#cta" className="text-neutral-600 hover:text-teal-500 transition-colors">Get Started</a></li>
+              <li><a href="/login" className="text-neutral-600 hover:text-teal-500 transition-colors">Login</a></li>
+              <li><a href="/signup" className="text-neutral-600 hover:text-teal-500 transition-colors">SignUp</a></li>
+              <li><a href="/chatbot" className="text-neutral-600 hover:text-teal-500 transition-colors">Chatbot</a></li>
+              <li><a href="/reportanalysis" className="text-neutral-600 hover:text-teal-500 transition-colors">Report Analysis</a></li>
             </ul>
           </nav>
         </div>

@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import SignUp from './components/auth/SignUp'
 import Chatbot from './components/chatbot/Chatbot';
+import Analysis from './components/report_analysis/rep_anal'
 import {stateContext} from "./context";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<SignUp/>}/>
+        <Route path="/reportanalysis" element={<Analysis/>}/>
       </Routes>
       {/* <Footer/> */}
       </BrowserRouter>
