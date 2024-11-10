@@ -155,7 +155,8 @@ export default function Component() {
           maxWidth: 600, 
           height: '80vh', 
           display: 'flex', 
-          flexDirection: 'column' 
+          flexDirection: 'column' ,
+          mt:5
         }}>
           <Typography variant="h5" align="center" sx={{ p: 2, bgcolor: 'primary.main', color: 'white' }}>
             Chatbot

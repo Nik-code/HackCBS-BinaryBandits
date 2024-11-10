@@ -1,8 +1,8 @@
 import time
 from openai import OpenAI
 # from get_local_resources import get_local_resources
-from perplexity_api import get_medical_information
-from config import OPENAI_API_KEY
+from .perplexity_api import get_medical_information
+from .config import OPENAI_API_KEY
 import json
 
 client = OpenAI(api_key=OPENAI_API_KEY)

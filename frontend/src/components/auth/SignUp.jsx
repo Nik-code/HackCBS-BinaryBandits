@@ -142,7 +142,7 @@ const getCoordinates=async (location)=>{
     <ToastContainer />
     
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-xl z-10 bg-white/80 backdrop-blur-sm"> {/* Changed max-w-md to max-w-xl */}
+      <Card className="w-full max-w-xl z-10 bg-white/80 backdrop-blur-sm mt-15"> {/* Changed max-w-md to max-w-xl */}
         <div className="flex items-center justify-center mb-4">
           <Img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CuraNet_Logo-v2ODPLpANeEXfPECK6GjnRCoVodV4z.png"

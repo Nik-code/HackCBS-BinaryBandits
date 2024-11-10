@@ -22,7 +22,7 @@ function App() {
     <>
     <stateContext.Provider value={{ userId, setUserId }}>
       <BrowserRouter>
-      {/* <Navbar/> */}
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/chatbot" element={<Chatbot/>}/>
