@@ -39,13 +39,12 @@ export default function LoginPage() {
     const email = formData.email;
     const password = formData.password;
 
-    // const userId = localStorage.getItem("userId");
-    // if (userId) {
-    //     console.log("User is logged in with userId:", userId);
-    //     // Use the userId as needed
-    //     navigate("/");
-    //     return
-    // }
+    if (localStorage.getItem("userId")) {
+        console.log("User is logged in with userId:", localStorage.getItem("userId"));
+        // Use the userId as needed
+        navigate("/");
+        return
+    }
 
     try {
       // Create form data
