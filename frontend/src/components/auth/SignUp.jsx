@@ -1,10 +1,13 @@
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Input, Card, CardContent, CardActions, FormLabel, Link, Typography } from "@mui/material";
 import { Img } from "react-image";
+import { stateContext } from '../../context';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
   const [activeTab, setActiveTab] = useState("SignUp");
+  const {userId,setUserId}=useContext(stateContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -41,12 +44,17 @@ export default function SignUp() {
       });
     }
   };
-
+  const navigate=useNavigate();
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password, firstName, lastName, dateOfBirth, gender, contactNumber, address } = formData;
-
+    if(userId){
+      // toast.info("user already logged in!");
+      console.log("Already logged in!");
+      navigate("/");
+      return
+    }
     try {
         const endpoint = "http://127.0.0.1:8000/api/users/register";
         const formDataToSend = {
@@ -84,6 +92,8 @@ export default function SignUp() {
         if (response.ok) {
             alert("Registration successful! Please log in.");
             setActiveTab("login");
+            const data = await response.json();
+            setUserId(data.userId);
         } else {
             console.error("Invalid data or server error.");
         }
@@ -91,6 +101,7 @@ export default function SignUp() {
         console.error("Error during registration:", error);
     }
 };
+
 
   return (
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">

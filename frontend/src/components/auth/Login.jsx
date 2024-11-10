@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState,useContext, useEffect } from 'react';
 import { Button, Input, Card, CardContent, CardHeader,CardActions, FormLabel, Link, Tabs, Tab , Typography} from "@mui/material";
 import { Img } from "react-image";
 import { motion } from "framer-motion";
+import { stateContext } from './../../context';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState("login");
@@ -9,7 +12,9 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const[userId,setUserId]=useState();
+  const navigate = useNavigate();
+  // const[userId,setUserId]=useState();
+  const {userId,setUserId}=useContext(stateContext);
 
   // Handle input change
   const handleChange = (e) => {
@@ -24,6 +29,13 @@ export default function LoginPage() {
     e.preventDefault();
     const email = formData.email;
     const password = formData.password;
+
+    if(userId){
+      toast.info("user already logged in!");
+      console.log("Already logged in!");
+      navigate("/");
+      return
+    }
 
     try {
       // Create form data
@@ -48,14 +60,15 @@ export default function LoginPage() {
         const data = await response.json();
         // Save the token to localStorage (or session storage)
         // localStorage.setItem("token", data.access_token);
-        // console.log("data",data);
         setUserId(data.userId);
+        toast.success("User logged in successfully!")
         // Redirect to another page or fetch user data
         // For example:
         // window.location.href = "/dashboard.html";
       } else {
         // Handle errors or invalid response
-        console.error("Invalid credentials or server error.");
+        toast.error("Wrong email or password")
+        console.log("Invalid credentials or server error.");
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -64,6 +77,9 @@ export default function LoginPage() {
   };
 
   return (
+    <>
+    {/* <ToastContainer /> */}
+    
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden z-0">
         <motion.div
@@ -107,6 +123,7 @@ export default function LoginPage() {
         />
       </div>
 
+      
       <Card className="w-full max-w-md z-10 bg-white/80 backdrop-blur-sm">
         <div>
         {/* <CardHeader className="space-y-1"> */}
@@ -185,6 +202,7 @@ export default function LoginPage() {
         </CardActions>
       </Card>
     </div>
+    </>
   );
 }
 
