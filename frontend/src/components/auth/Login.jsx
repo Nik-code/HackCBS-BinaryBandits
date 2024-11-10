@@ -5,8 +5,17 @@ import { motion } from "framer-motion";
 import { stateContext } from './../../context';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
+  // toast.configure({
+  //   autoClose: 3000,
+  //   draggable: false,
+  //   style: {
+  //     width: '300px',
+  //     fontSize: '14px',
+  //   },
+  // });
   const [activeTab, setActiveTab] = useState("login");
   const [formData, setFormData] = useState({
     email: "",
@@ -71,6 +80,7 @@ export default function LoginPage() {
         console.log("Invalid credentials or server error.");
       }
     } catch (error) {
+      toast.error("Error in operation")
       console.error("Error during login:", error);
     }
 
@@ -78,7 +88,7 @@ export default function LoginPage() {
 
   return (
     <>
-    {/* <ToastContainer /> */}
+    <ToastContainer />
     
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 overflow-hidden z-0">

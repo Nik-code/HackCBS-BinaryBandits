@@ -4,8 +4,18 @@ import { Button, Input, Card, CardContent, CardActions, FormLabel, Link, Typogra
 import { Img } from "react-image";
 import { stateContext } from '../../context';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp() {
+  // toast.configure({
+  //   autoClose: 3000,
+  //   draggable: false,
+  //   style: {
+  //     width: '300px',
+  //     fontSize: '14px',
+  //   },
+  // });
   const [activeTab, setActiveTab] = useState("SignUp");
   const {userId,setUserId}=useContext(stateContext);
   const [formData, setFormData] = useState({
@@ -38,6 +48,7 @@ const getCoordinates=async (location)=>{
     return data.results[0].annotations.DMS;
   })
   .catch(error => {
+    toast.error("We have an error")
     console.error('There was a problem with the fetch operation:', error);
   });
 }
