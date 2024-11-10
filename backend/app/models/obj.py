@@ -9,9 +9,9 @@ class ObjectIdField(str):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
-    
+
     @classmethod
-    def validate(cls, v):
+    def validate(cls, v, **args):
         if isinstance(v, ObjectId):
             return str(v)  # Convert ObjectId to string
         elif isinstance(v, str):
