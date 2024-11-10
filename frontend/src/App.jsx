@@ -9,11 +9,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import SignUp from './components/auth/SignUp'
+import Chatbot from './components/chatbot/Chatbot';
 import {stateContext} from "./context";
 
 function App() {
   const [userId, setUserId] = useState()
-
   return (
     <>
     <stateContext.Provider value={{ userId, setUserId }}>
@@ -21,6 +21,7 @@ function App() {
       {/* <Navbar/> */}
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/SignUp" element={<SignUp/>}/>
       </Routes>
