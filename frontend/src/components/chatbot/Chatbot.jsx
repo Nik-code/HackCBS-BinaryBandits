@@ -51,14 +51,14 @@ export default function Component() {
         // localStorage.setItem("token", data.access_token);
         console.log(data);
         localStorage.setItem("thread_id", data.thread_id);
-        setTimeout(() => {
-          const botResponse = {
-            text: data.response,
-            from: "bot",
-            timestamp: Date.now()
-          };
-          setMessages((prevMessages) => [...prevMessages, botResponse]);
-        }, 1000);
+        
+        const botResponse = {
+          text: data.response,
+          from: "bot",
+          timestamp: Date.now()
+        };
+        setMessages((prevMessages) => [...prevMessages, botResponse]);
+
       } else {
         console.log(response)
         console.log("Invalid credentials or server error.");

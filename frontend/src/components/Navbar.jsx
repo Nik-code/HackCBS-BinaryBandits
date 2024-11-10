@@ -20,6 +20,7 @@ const Navbar = () => {
               <li><Link to="/login" className="text-neutral-600 hover:text-teal-500 transition-colors">Login</Link></li>
               <li><Link to="/signup" className="text-neutral-600 hover:text-teal-500 transition-colors">SignUp</Link></li>
               <li><Link to="/chatbot" className="text-neutral-600 hover:text-teal-500 transition-colors">Chatbot</Link></li>
+              <li><Link to="/doctor-list" className="text-neutral-600 hover:text-teal-500 transition-colors">Doctors Recommended</Link></li>
               <li><Link to="/reportanalysis" className="text-neutral-600 hover:text-teal-500 transition-colors">Report Analysis</Link></li>
               <li><Link to="/outbreak-map" className="text-neutral-600 hover:text-teal-500 transition-colors">Disease Outbreak</Link></li>
             </ul>
