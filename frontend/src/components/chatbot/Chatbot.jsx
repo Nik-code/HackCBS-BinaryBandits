@@ -95,6 +95,18 @@ export default function Component() {
     addBotResponse(input,localStorage.getItem("thread_id"));
   };
 
+  function formatText(input) {
+    // Bold words surrounded by * or ** by replacing with <b> tags
+    let formatted = input.replace(/\*\*([^\*]+)\*\*/g, "<b>$1</b>"); // for **bold**
+    formatted = formatted.replace(/\*([^\*]+)\*/g, "<b>$1</b>"); // for *bold*
+
+    // Put each list item on a new line for numbered items and bullet points
+    formatted = formatted.replace(/(\d+\.)\s/g, "\n$1 "); // Numbered lists
+    formatted = formatted.replace(/(-)\s/g, "\n$1 "); // Bullet points
+
+    return formatted;
+}
+
   const getUserData=async ()=>{
     try {
       console.log("userId",userId);
@@ -181,7 +193,8 @@ export default function Component() {
                   maxWidth: '70%',
                 }}
               >
-                <Typography variant="body2">{msg.text}</Typography>
+                {/* <Typography variant="body2">{msg.text}</Typography> */}
+                <Typography variant="body2">{formatText(msg.text)}</Typography>
                 <Typography variant="caption" sx={{ opacity: 0.7 }}>
                   {new Date(msg.timestamp).toLocaleTimeString()}
                 </Typography>
