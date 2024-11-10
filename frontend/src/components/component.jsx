@@ -87,7 +87,17 @@ export default function Component() {
               <h2 className="text-5xl font-bold text-neutral-800 mb-6">Welcome to CuraNet</h2>
               <p className="text-2xl text-neutral-600 mb-12">Your AI-Powered Healthcare Companion</p>
               <a href="/Login">
-                <Button className="bg-teal-400 hover:bg-teal-500 text-white text-lg py-6 px-8">
+                <Button className= "text-4xl py-8 px-10" 
+                sx={{
+                backgroundColor: 'teal',            // Initial background color
+                color: 'white',                     // Text color
+                '&:hover': {
+                backgroundColor: '#00bfa5',      // Hover background color
+                },
+                fontSize:'1.2rem',
+                borderRadius:'1.6rem',
+                padding:"1rem 2rem"
+  }}>
                 Get Started
                 </Button>
               </a>

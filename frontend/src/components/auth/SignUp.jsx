@@ -75,9 +75,9 @@ const getCoordinates=async (location)=>{
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password, firstName, lastName, dateOfBirth, gender, contactNumber, address } = formData;
-    const userId = localStorage.getItem("userId");
-    if (userId) {
+    if (localStorage.getItem("userId")) {
         console.log("User is logged in with userId:", userId);
+        toast.info("User is already logged in")
         // Use the userId as needed
         navigate("/");
         return
@@ -125,16 +125,22 @@ const getCoordinates=async (location)=>{
             // setUserId(data.userId);
             localStorage.setItem("userId", data.userId)
             console.log("REG IN ID",localStorage.getItem("userId"));
+            toast.success("Registeration Done!");
         } else {
+            toast.error("Invalid data or server error.");
             console.error("Invalid data or server error.");
         }
     } catch (error) {
+        toast.error("Error during registration.");
         console.error("Error during registration:", error);
     }
 };
 
 
   return (
+    <>
+    <ToastContainer />
+    
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-xl z-10 bg-white/80 backdrop-blur-sm"> {/* Changed max-w-md to max-w-xl */}
         <div className="flex items-center justify-center mb-4">
@@ -234,5 +240,6 @@ const getCoordinates=async (location)=>{
         </CardActions>
       </Card>
     </div>
+    </>
   );
 }
