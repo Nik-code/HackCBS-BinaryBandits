@@ -219,7 +219,17 @@ const getCoordinates=async (location)=>{
                 <Input id="password" type="password" value={formData.password} onChange={handleChange} fullWidth required />
               </div>
 
-              <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white col-span-2" type="submit">
+              <Button className="w-full bg-teal-400 hover:bg-teal-500 text-white col-span-2" type="submit"
+              sx={{
+                backgroundColor: 'teal',            // Initial background color
+                color: 'white',                     // Text color
+                '&:hover': {
+                backgroundColor: '#037364',      // Hover background color
+                },
+                fontSize:'1.2rem',
+                borderRadius:'1.6rem',
+                padding:"0.5rem 1rem"
+  }}>
                 Sign Up
               </Button>
             </div>
