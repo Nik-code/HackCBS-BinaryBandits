@@ -40,7 +40,7 @@ export default function Component() {
           "Content-Type": "application/json"
       },
       body: JSON.stringify({
-          message: message, // Ensure `userMessage` is defined and in the expected format,
+          message: JSON.stringify(message), // Ensure `userMessage` is defined and in the expected format,
           thread_id:thread_id
       })
       })

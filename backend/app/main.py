@@ -46,9 +46,13 @@ async def chatbot_endpoint(request: Request):
         thread_id = data.get('thread_id')
         reset = data.get('reset', False)
 
+        print("HI")
+        print(user_message,thread_id,reset)
         if not user_message:
+            print("YO")
             raise HTTPException(status_code=400, detail="User message is required")
 
+        print("ALSO HERE")
         response, new_thread_id = chat(user_message, thread_id, reset)
         return {"response": response, "thread_id": new_thread_id}
     except Exception as e:
