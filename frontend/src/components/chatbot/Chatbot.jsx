@@ -31,6 +31,39 @@ export default function Component() {
   const userId = localStorage.getItem("userId");
   const [isLoading, setIsLoading] = useState(false);
 
+  const addBotResponse=async (message,thread_id)=>{
+    const input={message,thread_id}
+    try{
+      const response=await fetch("http://127.0.0.1:8000/api/chatbot",{
+        method:"POST",
+        body:input
+      })
+
+      if (response.ok) {
+        const data = await response.json();
+        // Save the token to localStorage (or session storage)
+        // localStorage.setItem("token", data.access_token);
+        console.log(data);
+        localStorage.setItem("thread_id", data.thread_id);
+        setTimeout(() => {
+          const botResponse = {
+            text: data.response,
+            from: "bot",
+            timestamp: Date.now()
+          };
+          setMessages((prevMessages) => [...prevMessages, botResponse]);
+        }, 1000);
+      } else {
+        // Handle errors or invalid response
+        // toast.error("Wrong email or password")
+        console.log("Invalid credentials or server error.");
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
   const handleSend = () => {
     if (input.trim() === "") return;
 
@@ -44,14 +77,15 @@ export default function Component() {
     setInput("");
 
     // Simulate a bot response after a short delay
-    setTimeout(() => {
-      const botResponse = {
-        text: "This is a bot response.",
-        from: "bot",
-        timestamp: Date.now()
-      };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    // setTimeout(() => {
+    //   const botResponse = {
+    //     text: "This is a bot response.",
+    //     from: "bot",
+    //     timestamp: Date.now()
+    //   };
+    //   setMessages((prevMessages) => [...prevMessages, botResponse]);
+    // }, 1000);
+    addBotResponse(input,localStorage.getItem("thread_id"));
   };
 
   const getUserData=async ()=>{
@@ -78,19 +112,23 @@ export default function Component() {
       return ""
     }
   }
+
+  
   useEffect(() => {
     console.log(userId);
     const user_demographic=getUserData();
+    addBotResponse(user_demographic,null)
     // const user_history=getUserHistory();
     // Simulate a bot response after a short delay
-    setTimeout(() => {
-      const botResponse = {
-        text: "This is a bot response.",
-        from: "bot",
-        timestamp: Date.now()
-      };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    // setTimeout(() => {
+    //   const botResponse = {
+    //     text: "This is a bot response.",
+    //     from: "bot",
+    //     timestamp: Date.now()
+    //   };
+    //   setMessages((prevMessages) => [...prevMessages, botResponse]);
+    // }, 1000);
+
   }, [])
 
   return (

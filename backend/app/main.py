@@ -7,7 +7,7 @@ from .routes.symptom_routes import symptom_analysis_router
 from .routes.lab_routes import lab_router
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from llm_services.disease_diagnosis_api import chat  # Importing the chatbot function
+from app.llm_services.disease_diagnosis_api import chat  # Importing the chatbot function
 
 app = FastAPI()
 
