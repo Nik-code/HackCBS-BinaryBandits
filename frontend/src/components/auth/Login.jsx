@@ -14,7 +14,7 @@ export default function LoginPage() {
   });
   const navigate = useNavigate();
   // const[userId,setUserId]=useState();
-  const {userId,setUserId}=useContext(stateContext);
+  // const {userId,setUserId}=useContext(stateContext);
 
   // Handle input change
   const handleChange = (e) => {
@@ -30,12 +30,13 @@ export default function LoginPage() {
     const email = formData.email;
     const password = formData.password;
 
-    if(userId){
-      toast.info("user already logged in!");
-      console.log("Already logged in!");
-      navigate("/");
-      return
-    }
+    // const userId = localStorage.getItem("userId");
+    // if (userId) {
+    //     console.log("User is logged in with userId:", userId);
+    //     // Use the userId as needed
+    //     navigate("/");
+    //     return
+    // }
 
     try {
       // Create form data
@@ -60,7 +61,10 @@ export default function LoginPage() {
         const data = await response.json();
         // Save the token to localStorage (or session storage)
         // localStorage.setItem("token", data.access_token);
-        setUserId(data.userId);
+        // setUserId(data.userId);
+        localStorage.setItem("userId", data.userId);
+        console.log(data.userId);
+        console.log("LOG IN ID",localStorage.getItem("userId"));
         toast.success("User logged in successfully!")
         // Redirect to another page or fetch user data
         // For example:
