@@ -34,11 +34,17 @@ export default function Component() {
   const addBotResponse=async (message,thread_id)=>{
     const input={message,thread_id}
     try{
-      const response=await fetch("http://127.0.0.1:8000/api/chatbot",{
+      const response=await fetch("http://127.0.0.1:8000/api/chat",{
         method:"POST",
-        body:input
+        headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          message: message, // Ensure `userMessage` is defined and in the expected format,
+          thread_id:thread_id
       })
-
+      })
+      console.log("RES",response)
       if (response.ok) {
         const data = await response.json();
         // Save the token to localStorage (or session storage)
@@ -56,6 +62,7 @@ export default function Component() {
       } else {
         // Handle errors or invalid response
         // toast.error("Wrong email or password")
+        console.log(response)
         console.log("Invalid credentials or server error.");
       }
     }
