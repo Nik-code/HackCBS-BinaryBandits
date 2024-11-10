@@ -1,12 +1,13 @@
+
 import React, { useContext, useEffect, useState } from 'react';
-import { 
-  TextField, 
-  Button, 
-  Box, 
-  Paper, 
-  Typography, 
-  Divider, 
-  ThemeProvider, 
+import {
+  TextField,
+  Button,
+  Box,
+  Paper,
+  Typography,
+  Divider,
+  ThemeProvider,
   createTheme,
   CssBaseline
 } from '@mui/material';
@@ -27,8 +28,8 @@ const theme = createTheme({
 export default function Component() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  // const {userId,setUserId}=useContext(stateContext);
   const userId = localStorage.getItem("userId");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSend = () => {
     if (input.trim() === "") return;

@@ -109,11 +109,14 @@ export default function Component() {
                 title="Nearby Healthcare"
                 description="Find doctors and hospitals in your vicinity with ease."
               />
+              <a href="/Analysis">
               <FeatureCard
                 icon={<FileText className="w-12 h-12 text-teal-400" />}
                 title="Report Analysis"
                 description="AI-enhanced analysis of your medical reports for better understanding."
               />
+              </a>
+             
               <FeatureCard
                 icon={<Bell className="w-12 h-12 text-teal-400" />}
                 title="Outbreak Alerts"
