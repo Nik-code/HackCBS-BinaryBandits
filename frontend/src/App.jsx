@@ -13,6 +13,8 @@ import Chatbot from './components/chatbot/Chatbot';
 import Analysis from './components/report_analysis/rep_anal'
 import {stateContext} from "./context";
 import Logout from './components/auth/Logout';
+import OutbreakMap from './components/outbreak_map/OutbreakMap';
+import DoctorList from './components/nearby_resources/DoctorList';
 
 function App() {
   const [userId, setUserId] = useState()
@@ -28,6 +30,8 @@ function App() {
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/reportanalysis" element={<Analysis/>}/>
+        <Route path="/outbreak-map" element={<OutbreakMap/>}/>
+        <Route path="/doctor-list" element={<DoctorList/>}/>
       </Routes>
       {/* <Footer/> */}
       </BrowserRouter>

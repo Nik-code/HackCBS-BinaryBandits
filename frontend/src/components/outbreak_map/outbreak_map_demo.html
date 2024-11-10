@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_696d9e0ddf9c51ea79a1476f6045082e {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+     <div style="position: fixed; 
+     bottom: 50px; left: 50px; width: 200px; height: 180px; 
+     border:2px solid grey; z-index:9999; font-size:14px;
+     background-color:white; padding: 10px;">
+     <strong>Disease Legend</strong><br>
+     <i style="background:red; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>Dengue Fever<br>
+     <i style="background:blue; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>Cholera<br>
+     <i style="background:green; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>Malaria<br>
+     <i style="background:purple; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>COVID-19<br>
+     <i style="background:orange; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>Typhoid<br>
+     <i style="background:brown; width: 10px; height: 10px; float: left; margin-right: 5px; border-radius: 50%;"></i>Ebola<br>
+     </div>
+     
+    
+            <div class="folium-map" id="map_696d9e0ddf9c51ea79a1476f6045082e" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_696d9e0ddf9c51ea79a1476f6045082e = L.map(
+                "map_696d9e0ddf9c51ea79a1476f6045082e",
+                {
+                    center: [20.5937, 78.9629],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 5,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_cf9b93d3428863021f53cc0cdc7e354e = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_cf9b93d3428863021f53cc0cdc7e354e.addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var marker_2c52067687e5201fc4620754d82cb68b = L.marker(
+                [28.6139, 77.209],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var icon_fc3dbcaf162330b06a3702ae0d642a44 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_2c52067687e5201fc4620754d82cb68b.setIcon(icon_fc3dbcaf162330b06a3702ae0d642a44);
+        
+    
+        var popup_72445ad19080746ef513de9630d92d47 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_aef251e1b8455046ca6652db108a374c = $(`<div id="html_aef251e1b8455046ca6652db108a374c" style="width: 100.0%; height: 100.0%;">Your Location</div>`)[0];
+                popup_72445ad19080746ef513de9630d92d47.setContent(html_aef251e1b8455046ca6652db108a374c);
+            
+        
+
+        marker_2c52067687e5201fc4620754d82cb68b.bindPopup(popup_72445ad19080746ef513de9630d92d47)
+        ;
+
+        
+    
+    
+            var circle_a7f980eb4194eaf4b43cbb522f5e7745 = L.circle(
+                [28.6139, 77.209],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 75000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_e85becb20b4f361d2d09fe423ef4f78a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_65addfd50882e2af1d7efc7de5ec2993 = $(`<div id="html_65addfd50882e2af1d7efc7de5ec2993" style="width: 100.0%; height: 100.0%;">Disease: Dengue Fever<br>Region: Delhi<br>Cases: ~1500</div>`)[0];
+                popup_e85becb20b4f361d2d09fe423ef4f78a.setContent(html_65addfd50882e2af1d7efc7de5ec2993);
+            
+        
+
+        circle_a7f980eb4194eaf4b43cbb522f5e7745.bindPopup(popup_e85becb20b4f361d2d09fe423ef4f78a)
+        ;
+
+        
+    
+    
+            var marker_98a0f029385b45cd8e2fea7a97c63b48 = L.marker(
+                [28.6139, 77.209],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_4edc9f67586d53bb176a4a6c8a3aaafd = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~1500 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_98a0f029385b45cd8e2fea7a97c63b48.setIcon(div_icon_4edc9f67586d53bb176a4a6c8a3aaafd);
+        
+    
+            var circle_a7afe2031d5627c1bad5d8adefd83f3f = L.circle(
+                [19.076, 72.8777],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 90000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_6f57ab32944e3903c99512239cb3602c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_47b01a1e8d425dddda7d1ae9f8a9479c = $(`<div id="html_47b01a1e8d425dddda7d1ae9f8a9479c" style="width: 100.0%; height: 100.0%;">Disease: Cholera<br>Region: Mumbai<br>Cases: ~2300</div>`)[0];
+                popup_6f57ab32944e3903c99512239cb3602c.setContent(html_47b01a1e8d425dddda7d1ae9f8a9479c);
+            
+        
+
+        circle_a7afe2031d5627c1bad5d8adefd83f3f.bindPopup(popup_6f57ab32944e3903c99512239cb3602c)
+        ;
+
+        
+    
+    
+            var marker_ddc7649b5da8b67ce2a2cbace0949d11 = L.marker(
+                [19.076, 72.8777],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_22304445d6187c230432fe9c03546c88 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~2300 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_ddc7649b5da8b67ce2a2cbace0949d11.setIcon(div_icon_22304445d6187c230432fe9c03546c88);
+        
+    
+            var circle_8fb1970cba5c3691b2cb7dfd5db521b6 = L.circle(
+                [12.9716, 77.5946],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 58000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_76d96ef628a26f0b5ce10adc483a47e6 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8bede67c553cc2a0beb20de191d72aea = $(`<div id="html_8bede67c553cc2a0beb20de191d72aea" style="width: 100.0%; height: 100.0%;">Disease: Malaria<br>Region: Bengaluru<br>Cases: ~3000</div>`)[0];
+                popup_76d96ef628a26f0b5ce10adc483a47e6.setContent(html_8bede67c553cc2a0beb20de191d72aea);
+            
+        
+
+        circle_8fb1970cba5c3691b2cb7dfd5db521b6.bindPopup(popup_76d96ef628a26f0b5ce10adc483a47e6)
+        ;
+
+        
+    
+    
+            var marker_aafa4d715f54e06beb751d3edde16658 = L.marker(
+                [12.9716, 77.5946],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_2162b0477e6d842df9e1558e13e7f495 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~3000 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_aafa4d715f54e06beb751d3edde16658.setIcon(div_icon_2162b0477e6d842df9e1558e13e7f495);
+        
+    
+            var circle_5843b8788a5219d44ec96d9c39e38016 = L.circle(
+                [22.5726, 88.3639],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 65000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_1788dcd21d1cd4f10feb829752b051ce = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6b2c0509b9ccd90ad40dab4bdec69201 = $(`<div id="html_6b2c0509b9ccd90ad40dab4bdec69201" style="width: 100.0%; height: 100.0%;">Disease: COVID-19<br>Region: Kolkata<br>Cases: ~12000</div>`)[0];
+                popup_1788dcd21d1cd4f10feb829752b051ce.setContent(html_6b2c0509b9ccd90ad40dab4bdec69201);
+            
+        
+
+        circle_5843b8788a5219d44ec96d9c39e38016.bindPopup(popup_1788dcd21d1cd4f10feb829752b051ce)
+        ;
+
+        
+    
+    
+            var marker_b114acb4e2e7f5c59943c7de66ed7eee = L.marker(
+                [22.5726, 88.3639],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_cdadf080b146a7fdb8d8915575764953 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~12000 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_b114acb4e2e7f5c59943c7de66ed7eee.setIcon(div_icon_cdadf080b146a7fdb8d8915575764953);
+        
+    
+            var circle_fd709b0bf701eebee7ff3bd233c0aabb = L.circle(
+                [13.0827, 80.2707],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 42000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_86e2d973c4c114a3d9c7134b143ae16f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_c9a2f5a0066b9fbbbfad54cc1e4ba105 = $(`<div id="html_c9a2f5a0066b9fbbbfad54cc1e4ba105" style="width: 100.0%; height: 100.0%;">Disease: Typhoid<br>Region: Chennai<br>Cases: ~900</div>`)[0];
+                popup_86e2d973c4c114a3d9c7134b143ae16f.setContent(html_c9a2f5a0066b9fbbbfad54cc1e4ba105);
+            
+        
+
+        circle_fd709b0bf701eebee7ff3bd233c0aabb.bindPopup(popup_86e2d973c4c114a3d9c7134b143ae16f)
+        ;
+
+        
+    
+    
+            var marker_445302a293a4f66616738ab4cc74526c = L.marker(
+                [13.0827, 80.2707],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_a4a4d84f9c9a32d2fea7974eb2ffc094 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~900 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_445302a293a4f66616738ab4cc74526c.setIcon(div_icon_a4a4d84f9c9a32d2fea7974eb2ffc094);
+        
+    
+            var circle_b55b71368e2a9000948f7fa267de2d40 = L.circle(
+                [17.385, 78.4867],
+                {"bubblingMouseEvents": true, "color": "brown", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "brown", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 52000, "stroke": true, "weight": 3}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+        var popup_b30943ba8da5856f9915d1b1b952cfd9 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_beb6c3e29546a81564c3d4a953c3eafb = $(`<div id="html_beb6c3e29546a81564c3d4a953c3eafb" style="width: 100.0%; height: 100.0%;">Disease: Ebola<br>Region: Hyderabad<br>Cases: ~405</div>`)[0];
+                popup_b30943ba8da5856f9915d1b1b952cfd9.setContent(html_beb6c3e29546a81564c3d4a953c3eafb);
+            
+        
+
+        circle_b55b71368e2a9000948f7fa267de2d40.bindPopup(popup_b30943ba8da5856f9915d1b1b952cfd9)
+        ;
+
+        
+    
+    
+            var marker_9cd6df1c03344416906b466fe9e5a296 = L.marker(
+                [17.385, 78.4867],
+                {}
+            ).addTo(map_696d9e0ddf9c51ea79a1476f6045082e);
+        
+    
+            var div_icon_835ef058a1584be7241a1ece8eaa0d7e = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"font-size: 14px; color: black; background-color: white; padding: 2px; border-radius: 3px; text-align: center;\"\u003e~405 cases\u003c/div\u003e", "iconAnchor": [0, 0], "iconSize": [120, 25]});
+            marker_9cd6df1c03344416906b466fe9e5a296.setIcon(div_icon_835ef058a1584be7241a1ece8eaa0d7e);
+        
+</script>
+</html>
