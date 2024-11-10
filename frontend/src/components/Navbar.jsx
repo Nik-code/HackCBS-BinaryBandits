@@ -13,7 +13,8 @@ const Navbar = () => {
               height={40}
               className="w-auto h-8"
             /> */}
-            <span className="text-2xl font-bold text-teal-500">CuraNet</span>
+            <Link to="/">
+            <span className="text-2xl font-bold text-teal-500">CuraNet</span></Link>
           </div>
           <nav>
             <ul className="flex space-x-6">
