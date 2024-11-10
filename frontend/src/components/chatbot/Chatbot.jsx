@@ -60,8 +60,6 @@ export default function Component() {
           setMessages((prevMessages) => [...prevMessages, botResponse]);
         }, 1000);
       } else {
-        // Handle errors or invalid response
-        // toast.error("Wrong email or password")
         console.log(response)
         console.log("Invalid credentials or server error.");
       }
@@ -124,17 +122,7 @@ export default function Component() {
   useEffect(() => {
     console.log(userId);
     const user_demographic=getUserData();
-    addBotResponse(user_demographic,null)
-    // const user_history=getUserHistory();
-    // Simulate a bot response after a short delay
-    // setTimeout(() => {
-    //   const botResponse = {
-    //     text: "This is a bot response.",
-    //     from: "bot",
-    //     timestamp: Date.now()
-    //   };
-    //   setMessages((prevMessages) => [...prevMessages, botResponse]);
-    // }, 1000);
+    addBotResponse(`I am just giving you some data as base for further anlysis. My data is this ${JSON.stringify(user_demographic)}. Hi There! lets greet each other`,null)
 
   }, [])
 
