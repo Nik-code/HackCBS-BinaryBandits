@@ -1,5 +1,5 @@
 from openai import OpenAI
-from .config import PERPLEXITY_API_KEY
+from config import PERPLEXITY_API_KEY
 
 
 def get_medical_information(prompt):
