@@ -1,14 +1,16 @@
+
 import React, { useState } from 'react';
-import { 
-  TextField, 
-  Button, 
-  Box, 
-  Paper, 
-  Typography, 
-  Divider, 
-  ThemeProvider, 
+import {
+  TextField,
+  Button,
+  Box,
+  Paper,
+  Typography,
+  Divider,
+  ThemeProvider,
   createTheme,
-  CssBaseline
+  CssBaseline,
+  CircularProgress,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
@@ -25,61 +27,94 @@ const theme = createTheme({
 
 export default function Component() {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = () => {
-    if (input.trim() === "") return;
+  const handleSend = async () => {
+    if (input.trim() === '') return;
 
     const newMessage = {
       text: input,
-      from: "user",
-      timestamp: Date.now()
+      from: 'user',
+      timestamp: Date.now(),
     };
 
     setMessages([...messages, newMessage]);
-    setInput("");
+    setInput('');
 
-    // Simulate a bot response after a short delay
-    setTimeout(() => {
+    setIsLoading(true);
+
+    // Send the user input to an API endpoint and get the LLM response
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userMessage: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from the LLM');
+      }
+
+      const data = await response.json();
       const botResponse = {
-        text: "This is a bot response.",
-        from: "bot",
-        timestamp: Date.now()
+        text: data.llmOutput || 'No response from the LLM.',
+        from: 'bot',
+        timestamp: Date.now(),
       };
+
       setMessages((prevMessages) => [...prevMessages, botResponse]);
-    }, 1000);
+    } catch (error) {
+      const errorMessage = {
+        text: `Error: ${error.message}`,
+        from: 'bot',
+        timestamp: Date.now(),
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        height: '100vh', 
-        alignItems: "center", 
-        justifyContent: "center", 
-        bgcolor: 'background.default', 
-        p: 2 
-      }}>
-        <Paper elevation={3} sx={{ 
-          width: '100%', 
-          maxWidth: 600, 
-          height: '80vh', 
-          display: 'flex', 
-          flexDirection: 'column' 
-        }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
+          p: 2,
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            width: '100%',
+            maxWidth: 600,
+            height: '80vh',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Typography variant="h5" align="center" sx={{ p: 2, bgcolor: 'primary.main', color: 'white' }}>
             Chatbot
           </Typography>
-          <Box sx={{ 
-            flex: 1, 
-            overflowY: 'auto', 
-            p: 2, 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: 1 
-          }}>
+          <Box
+            sx={{
+              flex: 1,
+              overflowY: 'auto',
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+            }}
+          >
             {messages.map((msg, index) => (
               <Box
                 key={index}
@@ -99,6 +134,11 @@ export default function Component() {
                 </Typography>
               </Box>
             ))}
+            {isLoading && (
+              <Box sx={{ alignSelf: 'center', mt: 2 }}>
+                <CircularProgress />
+              </Box>
+            )}
           </Box>
           <Divider />
           <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -111,12 +151,7 @@ export default function Component() {
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               size="small"
             />
-            <Button
-              variant="contained"
-              color="primary"
-              endIcon={<SendIcon />}
-              onClick={handleSend}
-            >
+            <Button variant="contained" color="primary" endIcon={<SendIcon />} onClick={handleSend}>
               Send
             </Button>
           </Box>
