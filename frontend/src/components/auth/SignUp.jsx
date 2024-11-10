@@ -22,7 +22,22 @@ export default function SignUp() {
       coordinates: "",
     },
   });
-
+const getCoordinates=async (location)=>{
+  fetch(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=2140484258db4f4883e08c2ca82e059a`)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.json();  // parse JSON response
+  })
+  .then(data => {
+    console.log(data.results[0].annotations.DMS)
+    return data.results[0].annotations.DMS;
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+}
   // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -41,7 +56,6 @@ export default function SignUp() {
       });
     }
   };
-
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +63,8 @@ export default function SignUp() {
 
     try {
         const endpoint = "http://127.0.0.1:8000/api/users/register";
+        const coordinates=getCoordinates(`${address.street} ${address.city}, ${address.state}`)
+        const strCoordinates=`${coordinates.lat} ${coordinates.lng}`
         const formDataToSend = {
           profile:{
             firstName,
@@ -62,7 +78,7 @@ export default function SignUp() {
               state: address.state,
               zipCode: address.zipCode,
               country: address.country,
-              coordinates: address.coordinates
+              coordinates: strCoordinates
           }
           },
             email,
@@ -150,15 +166,15 @@ export default function SignUp() {
               </div>
               <div>
                 <FormLabel htmlFor="address.zipCode">Zip Code</FormLabel>
-                <Input id="address.zipCode" value={formData.address.zipCode} onChange={handleChange} fullWidth required />
+                <Input id="address.zipCode" type="number" value={formData.address.zipCode} onChange={handleChange} fullWidth required />
               </div>
               <div>
                 <FormLabel htmlFor="address.country">Country</FormLabel>
                 <Input id="address.country" value={formData.address.country} onChange={handleChange} fullWidth required />
               </div>
               <div>
-                <FormLabel htmlFor="address.coordinates">Coordinates</FormLabel>
-                <Input id="address.coordinates" value={formData.address.coordinates} onChange={handleChange} fullWidth required />
+                {/* <FormLabel htmlFor="address.coordinates">Coordinates</FormLabel> */}
+                <Input id="address.coordinates" type="hidden" value={formData.address.coordinates} onChange={handleChange} />
               </div>
 
               {/* Email and Password */}
@@ -180,21 +196,14 @@ export default function SignUp() {
 
         <CardActions>
           <p className="text-sm text-center w-full text-neutral-600">
-            {activeTab === "login" ? (
-              <>
-                Don't have an account?{" "}
-                <Link href="/SignUp" className="text-teal-500 hover:underline" onClick={() => setActiveTab("signup")}>
-                  Sign up
-                </Link>
-              </>
-            ) : (
-              <>
+            
+             
                 Already have an account?{" "}
-                <Link href="#" className="text-teal-500 hover:underline" onClick={() => setActiveTab("login")}>
+                <a href="/login" className="text-teal-500 hover:underline">
                   Log in
-                </Link>
-              </>
-            )}
+                </a>
+            
+            
           </p>
         </CardActions>
       </Card>

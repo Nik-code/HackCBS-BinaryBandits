@@ -163,24 +163,10 @@ export default function LoginPage() {
 
         <CardActions>
           <p className="text-sm text-center w-full text-neutral-600">
-            {activeTab === "login" ? (
-              <>
                 Don't have an account?{" "}
-                <Link href="/SignUp" className="text-teal-500 hover:underline" onClick={() => setActiveTab("signup")}>
+                <a href="/signup" className="text-teal-500 hover:underline">
                   Sign up
-                </Link>
-              </>
-            ) : (
-              <>
-                Already have an account?{" "}
-                <Link href="/login" className="text-teal-500 hover:underline" onClick={() => {
-                  setActiveTab("login")
-                  handleSubmit;
-                  }}>
-                  Log in
-                </Link>
-              </>
-            )}
+                </a>
           </p>
         </CardActions>
       </Card>
