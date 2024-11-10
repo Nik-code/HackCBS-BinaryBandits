@@ -1,6 +1,7 @@
 import time
 from openai import OpenAI
 from get_local_resources import get_local_resources
+from perplexity_api import get_medical_information
 from config import OPENAI_API_KEY
 import json
 
@@ -38,7 +39,7 @@ def create_assistant():
                 "type": "function",
                 "function": {
                     "name": "get_medical_information",
-                    "description": "Search the web for reliable health information using PerplexitY AI",
+                    "description": "Search the web for reliable health information using Perplexity AI",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -127,27 +128,25 @@ def handle_tool_calls(tool_calls):
     tool_outputs = []
     for tool_call in tool_calls:
         start_time = time.time()
-        if tool_call.function.name == "perform_web_search":
-            args = json.loads(tool_call.function.arguments)
-            print(f"Performing web search for query: {args['query']}")
-            search_results = perform_web_search(args["query"])
-            summarized_results = summarize_search_results(search_results)
-            tool_outputs.append({
-                "tool_call_id": tool_call.id,
-                "output": json.dumps(summarized_results)
-            })
+        args = json.loads(tool_call.function.arguments)
+        if tool_call.function.name == "get_medical_information":
+            print(f"Getting medical information for query: {args['query']}")
+            result = get_medical_information(args['query'])
         elif tool_call.function.name == "get_local_resources":
-            args = json.loads(tool_call.function.arguments)
             print(f"Getting local resources for: {args}")
             result = get_local_resources(
                 location=args["location"],
                 resource_type=args["resource_type"],
                 context=args.get("context", "")
             )
-            tool_outputs.append({
-                "tool_call_id": tool_call.id,
-                "output": json.dumps(result)
-            })
+        else:
+            result = {}
+            print(f"Unknown tool call: {tool_call.function.name}")
+
+        tool_outputs.append({
+            "tool_call_id": tool_call.id,
+            "output": json.dumps(result)
+        })
         end_time = time.time()
         print(f"Tool call '{tool_call.function.name}' completed in {end_time - start_time:.2f} seconds")
     return tool_outputs

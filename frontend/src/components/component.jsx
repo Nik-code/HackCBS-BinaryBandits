@@ -119,11 +119,14 @@ export default function Component() {
                 title="Outbreak Alerts"
                 description="Stay informed with real-time disease outbreak notifications."
               />
+              <a href="/chatbot">
               <FeatureCard
                 icon={<MessageCircle className="w-12 h-12 text-teal-400" />}
                 title="Health Chatbot"
                 description="Get instant health advice and recommendations from our AI chatbot."
               />
+              </a>
+              
               <FeatureCard
                 icon={<TestTube className="w-12 h-12 text-teal-400" />}
                 title="Lab Test Recommendations"
